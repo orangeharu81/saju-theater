@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사주극장 | 나의 일주 찾기</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f8f4ee;
+    margin: 0;
+    padding: 40px 16px;
+    color: #292724;
+  }
+  main {
+    max-width: 420px;
+    margin: auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 8px 28px #0000000b;
+  }
+  h1 { text-align: center; margin-bottom: 8px; }
+  .sub { text-align: center; color: #777; }
+  label { display: block; margin: 20px 0 8px; }
+  input, select, button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+  input, select { border: 1px solid #ddd; }
+  button {
+    background: #333;
+    color: white;
+    border: 0;
+    margin-top: 24px;
+    cursor: pointer;
+  }
+  #result {
+    margin-top: 24px;
+    text-align: center;
+    background: #f8f4ee;
+    padding: 22px;
+    border-radius: 16px;
+  }
+  .name { font-size: 28px; font-weight: 800; }
+  .note { font-size: 12px; color: #777; }
+</style>
+</head>
+<body>
+<main>
+  <h1>🌿 사주극장</h1>
+  <p class="sub">나는 어떤 일주일까?</p>
+
+  <label for="birth">생년월일</label>
+  <input id="birth" type="date">
+
+  <label for="type">달력 구분</label>
+  <select id="type">
+    <option value="solar">양력</option>
+    <option value="lunar">음력</option>
+  </select>
+
+  <label id="leapLabel" hidden>
+    <input id="leap" type="checkbox" style="width:auto">
+    음력 윤달
+  </label>
+
+ 
+  <button id="calculate">
+    나의 일주 찾기
+  </button>
+
+
+  <div id="result" role="status" aria-live="polite">
+    생년월일을 입력해 주세요.
+  </div>
+
+  <p class="note">
+    입력 날짜의 일진을 기준으로 계산합니다.
+    출생시간과 자시 적용 기준에 따라
+    명리학적 일주 해석이 달라질 수 있습니다.
+  </p>
+</main>
+
+<script type="module">
+  import KoreanLunarCalendar
+    from "https://esm.sh/korean-lunar-calendar@0.3.6";
+
+  const calendar = new KoreanLunarCalendar();
+  console.log(
+  "사용 가능한 함수:",
+  Object.getOwnPropertyNames(
+    Object.getPrototypeOf(calendar)
+  )
+);
+
+  const stems = "甲乙丙丁戊己庚辛壬癸";
+  const branches = "子丑寅卯辰巳午未申酉戌亥";
+  const stemKo = "갑을병정무기경신임계";
+  const branchKo = "자축인묘진사오미신유술해";
+
+  const type = document.querySelector("#type");
+  const leapLabel = document.querySelector("#leapLabel");
+  const result = document.querySelector("#result");
+
+  type.addEventListener("change", () => {
+    leapLabel.hidden = type.value !== "lunar";
+  });
+
+  document.querySelector("#calculate")
+    .addEventListener("click", () => {
+      const value = document.querySelector("#birth").value;
+
+      if (!value) {
+        result.textContent = "생년월일을 선택해 주세요.";
+        return;
+      }
+
+      const [year, month, day] = value.split("-").map(Number);
+      const isLunar = type.value === "lunar";
+      const leap = document.querySelector("#leap").checked;
+
+      const valid = isLunar
+        ? calendar.setLunarDate(year, month, day, leap)
+        : calendar.setSolarDate(year, month, day);
+
+      if (!valid) {
+        result.textContent = "지원하지 않거나 잘못된 날짜입니다.";
+        return;
+      }
+
+      console.log("한글 갑자:", calendar.getGapja());
+      console.log("한자 갑자:", calendar.getChineseGapja());
+      const hanja = calendar.getChineseGapja();
+      const dayText = hanja.day.replace(/日$/, "");
+
+      const stemIndex = stems.indexOf(dayText[0]);
+      const branchIndex = branches.indexOf(dayText[1]);
+
+      if (stemIndex < 0 || branchIndex < 0) {
+        result.textContent = "계산 결과를 확인할 수 없습니다.";
+        return;
+      }
+
+      const name =
+        stemKo[stemIndex] + branchKo[branchIndex] + "일주";
+
+      result.innerHTML =
+        '<div class="name">' + name + '</div>' +
+        '<p>' + dayText + '日柱</p>';
+    });
+</script>
+</body>
+</html>
