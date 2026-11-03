@@ -392,17 +392,55 @@ const key = name.replace("일주", "");
 const message = dayMessages[key];
 const nickname = dayNicknames[key] || "이름 없는 주인공";
 
-result.innerHTML =
-  '<div style="font-size:14px;color:#8a655c;">🎭 오늘의 주인공</div>' +
-  '<div style="font-size:28px;font-weight:800;margin:12px 0;">' +
-  nickname + '</div>' +
-  '<div class="name">' + name + '</div>' +
-  '<p>' + dayText + '日柱</p>' +
-  '<p style="margin-top:18px;line-height:1.8;font-size:16px;">' +
-  '“' + (message || "당신의 이야기는 지금부터 시작됩니다.") + '”</p>';
 
+const pillars = [
+  "갑자","을축","병인","정묘","무진","기사",
+  "경오","신미","임신","계유","갑술","을해",
+  "병자","정축","무인","기묘","경진","신사",
+  "임오","계미","갑신","을유","병술","정해",
+  "무자","기축","경인","신묘","임진","계사",
+  "갑오","을미","병신","정유","무술","기해",
+  "경자","신축","임인","계묘","갑진","을사",
+  "병오","정미","무신","기유","경술","신해",
+  "임자","계축","갑인","을묘","병진","정사",
+  "무오","기미","경신","신유","임술","계해"
+];
 
-    });
+const number = String(pillars.indexOf(key) + 1).padStart(3, "0");
+
+result.classList.add("ticket-result");
+
+result.innerHTML = `
+  <div class="saju-ticket">
+    <div class="ticket-head">
+      <div class="ticket-brand">CLOVER PRESENTS</div>
+      <div class="ticket-title">사주극장</div>
+    </div>
+
+    <div class="ticket-main">
+      <div class="ticket-label">MY CHARACTER</div>
+      <div class="ticket-nickname">${nickname}</div>
+      <div class="ticket-pillar">${dayText} · ${name}</div>
+    </div>
+
+    <div class="ticket-story">
+      “${message || "당신의 이야기는 지금부터 시작됩니다."}”
+    </div>
+
+    <div class="ticket-stub">
+      <div>
+        <div class="ticket-stub-label">CHARACTER NO.</div>
+        <div class="ticket-number">${number} / 060</div>
+      </div>
+      <div class="ticket-stub-label">SAJU THEATER</div>
+    </div>
+
+    <div class="ticket-footer">
+      나를 알고, 너를 이해하는 60가지 이야기
+    </div>
+  </div>
+`;
+
 </script>
 </body>
 </html>
