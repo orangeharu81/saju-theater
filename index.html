@@ -132,7 +132,19 @@
         result.textContent = "지원하지 않거나 잘못된 날짜입니다.";
         return;
       }
-
+      // 존재하지 않는 윤달 입력 차단
+      if (isLunar && leap) {
+      const lunarInfo = calendar.getLunarCalendar();
+      console.log("윤달 검증:", lunarInfo);
+       
+      if (lunarInfo.year !== year ||
+      lunarInfo.month !== month ||
+      lunarInfo.day !== day ||
+      lunarInfo.intercalation !== true) {
+      result.textContent = "존재하지 않는 윤달입니다. 날짜를 확인해 주세요.";
+      return;
+        }
+      }
       console.log("한글 갑자:", calendar.getGapja());
       console.log("한자 갑자:", calendar.getChineseGapja());
       const hanja = calendar.getChineseGapja();
