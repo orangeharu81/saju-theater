@@ -167,6 +167,70 @@ const dayMessages = {
 };
 
  
+const dayNicknames = {
+  "갑자":"시작은 프로급",
+  "을축":"부드러운 불도저",
+  "병인":"열정 과속주의",
+  "정묘":"웃는 기록관",
+  "무진":"조용한 큰손",
+  "기사":"남의 고민 천재",
+  "경오":"설명 없는 직진",
+  "신미":"선택적 아무거나",
+  "임신":"해결책 과잉공급",
+  "계유":"조용한 심사위원",
+  "갑술":"내 편 한정 영웅",
+  "을해":"계획형 자유인",
+  "병자":"낭만 과몰입러",
+  "정축":"한 글자 경고등",
+  "무인":"느긋한 선두주자",
+  "기묘":"조용한 거리두기",
+  "경진":"초고속 정리반",
+  "신사":"꼼꼼한 결정장애",
+  "임오":"휴식 중 바쁨",
+  "계미":"공감하는 반대파",
+  "갑신":"실패 없는 재시작",
+  "을유":"취향 불가침",
+  "병술":"칭찬 기다리는 총무",
+  "정해":"뒤늦은 반박왕",
+  "무자":"조용한 인정욕구",
+  "기축":"은근한 고집왕",
+  "경인":"무조건 개척자",
+  "신묘":"말 없는 기대왕",
+  "임진":"상상력 폭주기관",
+  "계사":"막판 반전왕",
+  "갑오":"일단 출발대장",
+  "을미":"표정 자동번역",
+  "병신":"셀프 웃음 담당",
+  "정유":"디테일 집착러",
+  "무술":"믿음직한 과로러",
+  "기해":"비밀 많은 상담가",
+  "경자":"논리적 연애초보",
+  "신축":"끝없는 수정왕",
+  "임인":"도전 수집가",
+  "계묘":"감정 레이더",
+  "갑진":"큰 그림 설계자",
+  "을사":"웃는 팩트체커",
+  "병오":"열정 과다충전",
+  "정미":"내 몫은 나중에",
+  "무신":"태연한 비상회의",
+  "기유":"정리 본능러",
+  "경술":"끝나지 않는 토론",
+  "신해":"쿨한 의미분석가",
+  "임자":"여행지 수집가",
+  "계축":"답장 퇴고왕",
+  "갑인":"나홀로 선봉대",
+  "을묘":"다정한 선긋기",
+  "병진":"칭찬 충전형 리더",
+  "정사":"집중력 블랙홀",
+  "무오":"숨은 흥부자",
+  "기미":"남의 일정 관리자",
+  "경신":"서론 금지령",
+  "신유":"디테일 감별사",
+  "임술":"웃으며 영구저장",
+  "계해":"상상 속 드라마왕"
+};
+
+ 
   const type = document.querySelector("#type");
   const leapLabel = document.querySelector("#leapLabel");
   const result = document.querySelector("#result");
@@ -226,13 +290,20 @@ const dayMessages = {
         stemKo[stemIndex] + branchKo[branchIndex] + "일주";
 
  
-     const message = dayMessages[name.replace("일주", "")];
+ 
+const key = name.replace("일주", "");
+const message = dayMessages[key];
+const nickname = dayNicknames[key] || "이름 없는 주인공";
 
-     result.innerHTML =
-     '<div class="name">' + name + '</div>' +
-     '<p>' + dayText + '日柱</p>' +
-     '<p style="margin-top:18px;line-height:1.8;font-size:16px;">' +
-     '“' + (message || "당신의 이야기는 지금부터 시작됩니다.") + '”</p>';
+result.innerHTML =
+  '<div style="font-size:14px;color:#8a655c;">🎭 오늘의 주인공</div>' +
+  '<div style="font-size:28px;font-weight:800;margin:12px 0;">' +
+  nickname + '</div>' +
+  '<div class="name">' + name + '</div>' +
+  '<p>' + dayText + '日柱</p>' +
+  '<p style="margin-top:18px;line-height:1.8;font-size:16px;">' +
+  '“' + (message || "당신의 이야기는 지금부터 시작됩니다.") + '”</p>';
+
 
     });
 </script>
